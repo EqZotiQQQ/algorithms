@@ -3,3 +3,4 @@ release/
 .qmake.stash
 Makefile.*
 *user
+.vs
