@@ -1,0 +1,6 @@
+binary_search/
+debug/
+release/
+.qmake.stash
+Makefile.*
+*user
