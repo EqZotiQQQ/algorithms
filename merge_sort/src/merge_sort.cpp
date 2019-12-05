@@ -2,47 +2,52 @@
 
 using namespace std;
 
-vector<int> Merge_sort::merge_sort(vector<int>& v) {
-    merge_sort_worker(v, 0, v.size());
+void Merge_sort::merge_sort(vector<int>& v) {
+    merge_sort_worker(v, 0, v.size()-1);
 }
 
 void Merge_sort::merge_sort_worker(vector<int>& v, unsigned int l, unsigned int r) {
-    unsigned int m = (r - l)/2;
-    if(r > l) {
-        //vector<int> left(v.begin(), v.begin() + static_cast<int>(m));
+    if (l < r) {
+        unsigned int m = l + (r - l) / 2;
         merge_sort_worker(v, l, m);
-        //vector<int> right(v.begin() + static_cast<int>(m), v.end());
         merge_sort_worker(v, m + 1, r);
         merge(v, l, r, m);
     }
 }
 
-vector<int> Merge_sort::merge(std::vector<int>& v, unsigned int l, unsigned int r, unsigned int m) {
-    vector<int> temp;
-    temp.resize(v.size()+1);
-    unsigned int i = l;
-    unsigned int j = m+1;
-    unsigned int k = 0;
+void Merge_sort::merge(vector<int>& v, unsigned int l, unsigned int r, unsigned int m) {
+    int i, j, k;
+    int n1 = m - l + 1;
+    int n2 = r - m;
+    vector<int> v1, v2;
+    v1.reserve(n1);
+    v2.reserve(n2);
 
-    while(i <= m && j <= r) {
-        if(v[i] < v[j]) {
-            temp.push_back(v[i++]);
+    for (i = 0; i < n1; i++) {
+        v1.push_back(v[l + i]);
+    }
+    for (j = 0; j < n2; j++) {
+        v2.push_back(v[m + 1 + j]);
+    }
+
+    i = 0;
+    j = 0;
+    k = l;
+
+    while (i < n1 && j < n2) {
+        if (v1[i] <= v2[j]) {
+            v[k] = v1[i++];
         } else {
-            temp.push_back(v[j++]);
+            v[k] = v2[j++];
         }
         k++;
     }
-    while(i <= m) {
-        temp.push_back(v[i++]);
-        k++;
+
+    while (i < n1) {
+        v[k++] = v1[i++];
     }
-    while(j <= r) {
-        temp.push_back(v[j++]);
-        k++;
-    }
-    k--;
-    while(k >=0) {
-        v[k+l] = temp[k];
-        k--;
+
+    while (j < n2) {
+        v[k++] = v2[j++];
     }
 }
